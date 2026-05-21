@@ -1,6 +1,7 @@
 package com.KNBAN.api.Model.Entity;
 
 import com.KNBAN.api.Model.Enum.Premium;
+import com.KNBAN.api.Model.Enum.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -40,13 +41,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Premium premiumState;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Agenda> agenda;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AgendaUser> agendaUsers;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<String> roles;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,5 +82,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addAgendaUser(AgendaUser agendaUser) {
+        agendaUsers.add(agendaUser);
+        agendaUser.setUser(this);
+    }
+
+    public void removeAgendaUser(AgendaUser agendaUser) {
+        agendaUsers.remove(agendaUser);
+        agendaUser.setUser(null);
     }
 }
