@@ -64,13 +64,14 @@ public class SecurityConfig {
         CorsConfiguration apiConfig = new CorsConfiguration();
 
         apiConfig.setAllowedOrigins(List.of(
-                "http://mi_app(KNDOIT):3030")
+                "http://localhost:4200")
         );
 
         apiConfig.setAllowedMethods(List.of(
                 "GET",
                 "POST",
                 "PUT",
+                "PATCH",
                 "DELETE",
                 "OPTIONS"
         ));

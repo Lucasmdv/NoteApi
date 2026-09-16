@@ -1,6 +1,6 @@
 package com.KNBAN.api.security.repository;
 
-import com.KNBAN.api.Model.Entity.User;
+import com.KNBAN.api.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

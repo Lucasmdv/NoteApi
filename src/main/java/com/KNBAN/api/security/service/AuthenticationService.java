@@ -1,7 +1,10 @@
 package com.KNBAN.api.security.service;
 
-import com.KNBAN.api.Model.Entity.User;
-import com.KNBAN.api.security.dto.*;
+import com.KNBAN.api.domain.entity.User;
+import com.KNBAN.api.domain.enums.Role;
+import com.KNBAN.api.security.dto.AuthResponse;
+import com.KNBAN.api.security.dto.LoginRequest;
+import com.KNBAN.api.security.dto.RegisterRequest;
 import com.KNBAN.api.security.jwt.JwtService;
 import com.KNBAN.api.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +24,9 @@ public class AuthenticationService {
 
     public AuthResponse register(RegisterRequest request) {
         var user = User.builder()
-                .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(request.getRoles())
+                .role(Role.USER) // Default role
                 .build();
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
